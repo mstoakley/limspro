@@ -40,9 +40,8 @@ class BooksDB
     $statement = $dbo->conn->prepare($cmd);
     try{
     $statement->execute([':authorname' => $authorname]);
-    return 1;
     }catch(PDOException $e){
-      echo "Error: " . $e->getMessage();
+      echo "Error: Author " . $e->getMessage();
       return 0;
     }
     $authorID = $dbo->conn->lastInsertId();
@@ -50,25 +49,25 @@ class BooksDB
     $statement = $dbo->conn->prepare($cmd);
     try{
     $statement->execute([':genrename' => $genreName]);
-   return 1;
     }catch(PDOException $e){
-      echo "Error: " . $e->getMessage();
+      echo "Error:Genre" . $e->getMessage();
       return 0;
     }
     $genreID = $dbo->conn->lastInsertId();
+
     $cmd = "INSERT into books (Title,GenreId,AuthorID) VALUES (:title,:genreID,:authorID)";
     $statement= $dbo->conn->prepare($cmd);
     try{
     $statement->execute([':title' => $booktitle, ':genreID' => $genreID,':authorID' => $authorID]);
-    return 1;
     }catch(PDOException $e){
-      echo "Error: " . $e->getMessage();
+      echo "Error: Title " . $e->getMessage();
       return 0;
     }
+    return 1;
 }
     public function getGenres($dbo)
     {
-      $cmd = "SELECT GenreName as GName, GenreId as GId 
+      $cmd = "SELECT GenreId as GId, GenreName as GName
       FROM genre
       ";
       $statement = $dbo->conn->prepare($cmd);

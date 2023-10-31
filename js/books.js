@@ -14,22 +14,22 @@ function gethtml(result) {
                     <td>${book['AName']}</td>
                     <td>${book['BTitle']}</td>
                     <td>${book['GName']}</td>
-                    <td><button class="btn btn-primary">Check-Out</button>
+                    <td><button class="btn btn-primary">Check-Out</button></td>
                   </tr>`;
     });
     table += `</tbody></table>`;
     return addButton + table;
 }
+//dropdown for the genres
 
-function getselectbox(result) {
-    let selectbox = `<select id="ddgenres" class="form-control">`;
+  function getselectbox(result) {
+    let html = `<select id="ddgenre" class="form-control">`;
     result.forEach(genre => {
-        selectbox += `<option value="${genre['GID']}">${genre['GName']}</option>`;
+        html += `<option value="${genre['GName']}">${genre['GName']}</option>`;
     });
-    selectbox += `</select>`;
-    return selectbox;
-}
-    
+    html += `</select>`;
+    return html;
+  }  
 
 function GetAllBooks() {
     $.ajax({
@@ -38,7 +38,6 @@ function GetAllBooks() {
         dataType: "JSON",
         data: {action:"GetAllBooks"},  
         beforeSend: function() {
-            alert("About to send request");
         },
         success: function(result) {
            //alert("Success");
@@ -54,76 +53,72 @@ function GetAllBooks() {
     });
 }
 
-function LoadGenres() {
+function LoadGenres(){
+
+    $.ajax({
+    url: "/limspro/ajax/BooksDBAjax.php",
+    type: "POST",
+    dataType: "JSON",
+    data: {action:"LoadAllGenres"},  
+    beforeSend: function() {
+       
+    },
+    success: function(result) {
+       //alert("Success");
+       let x = JSON.stringify(result);
+       // alert(x);
+        let html = getselectbox(result);;
+        $("#ddgenre").html(html);
+    },
+    error:function(){
+        alert("Error");
+}
+    });
+
+}
+function pushtoserver(author, title, genre){
     $.ajax({
         url: "/limspro/ajax/BooksDBAjax.php",
         type: "POST",
         dataType: "JSON",
-        data: {action:"LoadGenres"},  
+        data: {action:"SaveBook",author:author, title:title, genre:genre},  
         beforeSend: function() {
-            alert("About to send request");
+            
         },
         success: function(result) {
            //alert("Success");
            let x = JSON.stringify(result);
-            //alert(x);
-            let html = getselectbox(result);
-            //alert(html);
-            $("#ddgenres").html(html);
+            alert(x);
+            $("#modalprogram").modal("hide");
+            GetAllBooks();
         },
         error:function(){
             alert("Error");
         }
-});
+    });
 }
 
-
-function pushtotheserver(authortext, booktext, ddgenre) {
-
-    $.ajax({
-        url: "/limspro/ajax/BooksDBAjax.php",
-        type: "POST",
-        dataType: "JSON",
-        data: {author:authortext,title:booktext,genre:ddgenre,action:"SendBooks"},  
-        beforeSend: function() {
-            alert("About to send request");
-        },
-        success: function(result) {
-           //alert("Success");
-           let x = JSON.stringify(result);
-
-            //alert(x);
-            let html = gethtml(result);
-            //alert(html);
-            $("#contentdiv").html(html);
-        },
-        error:function(){
-            alert("Error");
-        }
-
-});
-}
-    $(document).ready(
-        function() {
+    $(document).ready(() => {
         GetAllBooks();
         LoadGenres();
-        $(document).on("click", "#btnAddnew", function() {
+
+        $(document).on("click", "#btnAddnew", () => {
             $("#modalprogram").modal("show");
         });
-        $(document).on("click", "#savebutton", function() {
-            let author = $("#authortext").val();
-            let title = $("#booktext").val();
-            let genre = $("#ddgenres").val();
 
-            if(author != "" && title != "" && genre != "") {
-                pushtotheserver(author,title,genre);
+        $(document).on("click", "#savebutton", () => {
+            let author = $("#txtauthor").val();
+            let title = $("#txttitle").val();
+            let genre = $("#ddgenre").val();
+
+            if(author != "" && title != ""  && genre != ""){
+                pushtoserver(author, title, genre);
             }
-            else {
-                alert("invalid input");
+            else{
+                alert("invalid");
             }
-            
+          
         });
-      
-    }
-);
+    });
+    
 //As of 10/27/2023 All code is correct and working.

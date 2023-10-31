@@ -24,21 +24,17 @@
                     <div class = "modal-body">
                       <div class ="userinputelement">
                         <label> Book Author </label>
-                        <input id = "authortext" type = "text" ></input>
+                        <input id = "txtauthor" type = "text" ></input>
                       </div>
 
                       <div class ="userinputelement">
                         <label> Book Title </label>
-                        <input id = "booktext" type = "text"></input>
+                        <input id = "txttitle" type = "text"></input>
                       </div>
 
                       <div class ="userinputelement">
                         <label> Genre </label>
                         <select id = "ddgenre">
-                            <option value ="1">Fiction</option>
-                            <option value ="2">Non-Fiction</option>
-                            <option value ="3">Mystery</option>
-                            <option value ="5">Science Fiction</option>
                             </select>
                       </div>
                     </div>

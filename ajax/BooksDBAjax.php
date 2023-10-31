@@ -13,7 +13,7 @@ if($action1 == "GetAllBooks"){
  echo($rv);
  exit();
 }
-if($action1 == "LoadGenres"){
+if($action1 == "LoadAllGenres"){
     $dbo = new Database();
     $bbo = new BooksDB();
     $result = $bbo -> getGenres($dbo);
@@ -21,13 +21,13 @@ if($action1 == "LoadGenres"){
     echo($rv);
 }
 
-if($action1 == "SendBooks"){
-    $authortext = $_POST["authortext"];
-    $booktitle = $_POST["booktext"];
-    $ddgenre = $_POST["ddgenre"];
+if($action1 == "SaveBook"){
+    $author = $_POST['author'];
+    $title = $_POST['title'];
+    $genre = $_POST['genre'];
     $dbo = new Database();
     $bbo = new BooksDB();
-    $result = $bbo -> addNewBook($dbo,$booktitle,$authortext,$ddgenre);
+    $result = $bbo -> addNewBook($dbo,$title,$author,$genre);
     echo($result);
     exit();
 }
