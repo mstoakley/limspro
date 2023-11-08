@@ -14,7 +14,7 @@ function gethtml(result) {
                     <td>${book['AName']}</td>
                     <td>${book['BTitle']}</td>
                     <td>${book['GName']}</td>
-                    <td><button class="btn btn-primary">Check-Out</button></td>
+                    <td><button class="btn btn-primary" id = "btnchkout">Check-Out</button></td>
                   </tr>`;
     });
     table += `</tbody></table>`;
@@ -120,6 +120,10 @@ function pushtoserver(author, title, genre){
             }
           
         });
+        $(document).on("click", "#btnchkout", () => {
+            $("#chkoutbtn").modal("show");
     });
+    });
+ 
     
 //As of 10/27/2023 All code is correct and working.
