@@ -10,8 +10,9 @@ class BooksDB
     genre.GenreName as GName
     FROM
     books 
-    JOIN author ON books.AuthorId = author.AuthorId
-    JOIN genre ON books.GenreId = genre.GenreID";
+    JOIN author ON books.AuthorId = author.ID
+    JOIN genre ON books.GenreId = genre.ID";
+  
     
     $statement = $dbo->conn->prepare($cmd);
     $statement->execute();
@@ -26,8 +27,8 @@ class BooksDB
     genre.GenreName as GName
     FROM
     books 
-    JOIN author ON books.AuthorId = author.AuthorId
-    JOIN genre ON books.GenreId = genre.GenreID
+    JOIN author ON books.AuthorId = author.ID
+    JOIN genre ON books.GenreId = genre.ID
     WHERE genre.GenreName = :genreName";
     $statement = $dbo->conn->prepare($cmd);
     $statement->execute([':genreName' => $genreName]);
@@ -55,7 +56,7 @@ class BooksDB
     }
     $genreID = $dbo->conn->lastInsertId();
 
-    $cmd = "INSERT into books (Title,GenreId,AuthorID) VALUES (:title,:genreID,:authorID)";
+    $cmd = "INSERT into books (Title,GenreId,ID) VALUES (:title,:genreID,:authorID)";
     $statement= $dbo->conn->prepare($cmd);
     try{
     $statement->execute([':title' => $booktitle, ':genreID' => $genreID,':authorID' => $authorID]);
@@ -67,7 +68,7 @@ class BooksDB
 }
     public function getGenres($dbo)
     {
-      $cmd = "SELECT GenreId as GId, GenreName as GName
+      $cmd = "SELECT ID as GId, GenreName as GName
       FROM genre
       ";
       $statement = $dbo->conn->prepare($cmd);

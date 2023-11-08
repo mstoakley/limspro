@@ -38,6 +38,7 @@ function GetAllBooks() {
         dataType: "JSON",
         data: {action:"GetAllBooks"},  
         beforeSend: function() {
+            alert("Before Send");
         },
         success: function(result) {
            //alert("Success");
