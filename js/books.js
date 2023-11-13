@@ -131,12 +131,7 @@ function pushtoserver(author, title, genre){
         else{
             alert("invalid");
         }//check to see if member exists, if so then check out book else new member form is spawned
-        if (ifMemberExists(member) == true){
-            alert("Member Exists");
-        }
-        else{
-            alert("Member does not exist");
-        }
+    
     });
 function ifMemberExists(member){
     $.ajax({
@@ -149,7 +144,8 @@ function ifMemberExists(member){
         },
         success: function(result) {
             let x = JSON.stringify(result);
-           //alert("Success");
+          
+           alert("Member Exists");
             $("#chkoutbtn").modal("hide");
         },
         error:function(){
