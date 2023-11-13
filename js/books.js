@@ -102,7 +102,7 @@ function pushtoserver(author, title, genre){
     $(document).ready(() => {
         GetAllBooks();
         LoadGenres();
-
+        //add new book
         $(document).on("click", "#btnAddnew", () => {
             $("#modalprogram").modal("show");
         });
@@ -118,12 +118,46 @@ function pushtoserver(author, title, genre){
             else{
                 alert("invalid");
             }
-          
         });
+    });//check out button
         $(document).on("click", "#btnchkout", () => {
             $("#chkoutbtn").modal("show");
     });
+    $(document).on("click", "#submitbtn", () => {
+        let member = $("#txtmemberid").val();
+        if(member != ""){
+            ifMemberExists(member);
+        }
+        else{
+            alert("invalid");
+        }//check to see if member exists, if so then check out book else new member form is spawned
+        if (ifMemberExists(member) == true){
+            alert("Member Exists");
+        }
+        else{
+            alert("Member does not exist");
+        }
     });
- 
+function ifMemberExists(member){
+    $.ajax({
+        url: "/limspro/ajax/BooksDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"CheckMember",member:member},  
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+            let x = JSON.stringify(result);
+           //alert("Success");
+            $("#chkoutbtn").modal("hide");
+        },
+        error:function(){
+            $("chkoutbtn").modal("hide");
+            alert("Error Member not found");  
+        }
+    });
+}   
+
     
 //As of 10/27/2023 All code is correct and working.
