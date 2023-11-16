@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2023 at 12:35 AM
+-- Generation Time: Nov 15, 2023 at 04:39 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -57,37 +57,47 @@ CREATE TABLE `books` (
   `Title` varchar(100) DEFAULT NULL,
   `AuthorId` int(10) DEFAULT NULL,
   `GenreId` int(10) DEFAULT NULL,
-  `TransId` int(10) DEFAULT NULL
+  `Availability` bit(1) DEFAULT b'1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`ID`, `Title`, `AuthorId`, `GenreId`, `TransId`) VALUES
-(1, 'Pride and Predjudice', 1, 1, 1),
-(2, '1984', 2, 2, 2),
-(3, 'Emma', 1, 1, 3),
-(4, 'Harry Potter and the Sorcerer\'s Stone', 3, 5, 4),
-(15, 'The Great Gatsby', 29, NULL, NULL),
-(16, 'Fahrenheit 451 ', 30, NULL, NULL),
-(18, 'The Great Gatsby', 32, 12, NULL),
-(19, 'The Beautiful and the Dammed', 33, 13, NULL),
-(20, 'Fahrenheit 451 ', 34, 14, NULL);
+INSERT INTO `books` (`ID`, `Title`, `AuthorId`, `GenreId`, `Availability`) VALUES
+(1, 'Pride and Predjudice', 1, 1, b'0'),
+(2, '1984', 2, 2, b'0'),
+(3, 'Emma', 1, 1, b'0'),
+(4, 'Harry Potter and the Sorcerer\'s Stone', 3, 5, b'0'),
+(18, 'The Great Gatsby', 32, 12, b'0'),
+(19, 'The Beautiful and the Dammed', 33, 13, b'0'),
+(20, 'Fahrenheit 451 ', 34, 14, b'1');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fines`
+-- Table structure for table `checkouts`
 --
 
-CREATE TABLE `fines` (
+CREATE TABLE `checkouts` (
   `ID` int(11) NOT NULL,
   `MemberId` int(10) DEFAULT NULL,
-  `Amount` float DEFAULT NULL,
-  `PaymentStatus` char(1) DEFAULT NULL,
-  `DateofTAssesment` date DEFAULT NULL
+  `BookId` int(10) DEFAULT NULL,
+  `DueDate` date DEFAULT NULL,
+  `CheckOutDate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `checkouts`
+--
+
+INSERT INTO `checkouts` (`ID`, `MemberId`, `BookId`, `DueDate`, `CheckOutDate`) VALUES
+(1, 1, 1, '2023-10-15', '2023-10-01'),
+(2, 2, 2, '2023-10-16', '2023-10-02'),
+(3, 1, 3, '2023-10-17', '2023-10-03'),
+(4, 3, 4, '2023-10-18', '2023-10-04'),
+(6, 3, 18, '2023-10-20', '2023-10-06'),
+(7, 2, 19, '2023-10-21', '2023-10-07');
 
 -- --------------------------------------------------------
 
@@ -139,28 +149,15 @@ INSERT INTO `members` (`ID`, `FirstName`, `LastName`, `Email`, `Address`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactions`
+-- Table structure for table `returns`
 --
 
-CREATE TABLE `transactions` (
+CREATE TABLE `returns` (
   `ID` int(11) NOT NULL,
-  `MemberId` int(10) DEFAULT NULL,
-  `BookId` int(10) DEFAULT NULL,
-  `TransType` char(1) DEFAULT NULL,
-  `DateofTrans` date DEFAULT NULL
+  `CheckoutID` int(11) DEFAULT NULL,
+  `ReturnDate` date DEFAULT NULL,
+  `FineAmount` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `transactions`
---
-
-INSERT INTO `transactions` (`ID`, `MemberId`, `BookId`, `TransType`, `DateofTrans`) VALUES
-(1, 1, 1, 'B', '2023-10-01'),
-(2, 2, 2, 'B', '2023-10-02'),
-(3, 1, 3, 'B', '2023-10-03'),
-(4, 3, 4, 'B', '2023-10-04'),
-(6, 1, 3, 'R', '2023-10-06'),
-(7, 2, 2, 'R', '2023-10-07');
 
 --
 -- Indexes for dumped tables
@@ -178,15 +175,15 @@ ALTER TABLE `author`
 ALTER TABLE `books`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `book indicies` (`AuthorId`,`GenreId`),
-  ADD KEY `GenreId` (`GenreId`),
-  ADD KEY `TransID` (`TransId`);
+  ADD KEY `GenreId` (`GenreId`);
 
 --
--- Indexes for table `fines`
+-- Indexes for table `checkouts`
 --
-ALTER TABLE `fines`
+ALTER TABLE `checkouts`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `fine indicies` (`MemberId`);
+  ADD KEY `MemberId` (`MemberId`,`BookId`),
+  ADD KEY `BookId` (`BookId`);
 
 --
 -- Indexes for table `genre`
@@ -202,12 +199,11 @@ ALTER TABLE `members`
   ADD UNIQUE KEY `email index` (`Email`) USING BTREE;
 
 --
--- Indexes for table `transactions`
+-- Indexes for table `returns`
 --
-ALTER TABLE `transactions`
+ALTER TABLE `returns`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `MemberId` (`MemberId`,`BookId`),
-  ADD KEY `BookId` (`BookId`);
+  ADD KEY `CheckoutID` (`CheckoutID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -226,10 +222,10 @@ ALTER TABLE `books`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT for table `fines`
+-- AUTO_INCREMENT for table `checkouts`
 --
-ALTER TABLE `fines`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `checkouts`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `genre`
@@ -244,10 +240,10 @@ ALTER TABLE `members`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `transactions`
+-- AUTO_INCREMENT for table `returns`
 --
-ALTER TABLE `transactions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `returns`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -259,21 +255,20 @@ ALTER TABLE `transactions`
 ALTER TABLE `books`
   ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`AuthorId`) REFERENCES `author` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `books_ibfk_2` FOREIGN KEY (`GenreId`) REFERENCES `genre` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `books_ibfk_3` FOREIGN KEY (`TransID`) REFERENCES `transactions` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `books_ibfk_4` FOREIGN KEY (`TransId`) REFERENCES `transactions` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `books_ibfk_3` FOREIGN KEY (`TransID`) REFERENCES `checkouts` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `fines`
+-- Constraints for table `checkouts`
 --
-ALTER TABLE `fines`
-  ADD CONSTRAINT `fines_ibfk_1` FOREIGN KEY (`MemberId`) REFERENCES `members` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `checkouts`
+  ADD CONSTRAINT `checkouts_ibfk_1` FOREIGN KEY (`MemberId`) REFERENCES `members` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `checkouts_ibfk_2` FOREIGN KEY (`BookId`) REFERENCES `books` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `transactions`
+-- Constraints for table `returns`
 --
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`MemberId`) REFERENCES `members` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`BookId`) REFERENCES `books` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `returns`
+  ADD CONSTRAINT `returns_ibfk_1` FOREIGN KEY (`CheckoutID`) REFERENCES `checkouts` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
