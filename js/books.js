@@ -1,6 +1,8 @@
 function gethtml(result) {
     const addButton = `<div class"addnew"><button id = "btnAddnew" class ="btn btn-primary">Add Book</button></div>`;
     const chkOutBtn = `<div class"addnew"><button id = "btnchkout" class ="btn btn-primary">Check-Out</button></div>`;
+    const NewmemberBtn = `<div class"addnew"><button id = "addnewmemb"" class ="btn btn-primary">Add New Member</button></div>`
+    const ReturnBtn = `<div class"addnew"><button id = "btnreturn" class ="btn btn-primary">Return Book</button></div>`;
     let table = `<table class ="table table-striped">
                      <thead>
                         <th>Author</th>
@@ -17,7 +19,7 @@ function gethtml(result) {
                   </tr>`;
     });
     table += `</tbody></table>`;
-    return addButton + chkOutBtn + table;
+    return addButton + chkOutBtn + NewmemberBtn+ table;
 }
 //dropdown for the genres
 
@@ -44,7 +46,7 @@ function GetAllBooks() {
         dataType: "JSON",
         data: {action:"GetAllBooks"},  
         beforeSend: function() {
-            alert("Before Send");
+           
         },
         success: function(result) {
            //alert("Success");
@@ -66,7 +68,7 @@ function LoadBooks(){
         dataType: "JSON",
         data: {action:"LoadAvailableBooks"},  
         beforeSend: function() {
-            alert("Before Send");
+            
         },
         success: function(result) {
            //alert("Success");
@@ -164,6 +166,23 @@ function pushtoserver(author, title, genre){
         }
     
     });
+    //add new member button
+    $(document).on("click", "#addnewmemb", () => {
+        $("#addmemberbtn").modal("show");
+    });
+
+    $(document).on("click", "#membsubmitbtn", () => {
+        let firstName = $("#fname").val();
+        let lastName = $("#lname").val();
+        let email = $("#email").val();
+        let address = $("#address").val();
+        if(firstName != "" && lastName != "" && email != "" && address != ""){
+            addNewMember(firstName, lastName, email, address);
+        }
+        else{
+            alert("invalid");
+        }
+    });
 function ifMemberExists(member, userbook){
     $.ajax({
         url: "/limspro/ajax/MembersBDAjax.php",
@@ -180,7 +199,9 @@ function ifMemberExists(member, userbook){
         },
         error:function(){
             $("chkoutbtn").modal("hide"); //New Member Form is spawned
-            alert("Member not found: Create new member");  
+            alert("Member not found: Create new member"); 
+            $("#addmemberbtn").modal("show"); 
+
         }
     });
 }  
@@ -202,6 +223,25 @@ function CheckOutBooks(member, userbook){
         error:function(){
             $("chkoutbtn").modal("hide");
             alert("Error: Max Books Checked Out");  
+        }
+    });
+}
+function addNewMember(firstName, lastName, email, address){
+    $.ajax({
+        url: "/limspro/ajax/MembersBDAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"AddMember",firstName:firstName, lastName:lastName, email:email, address:address},  
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+            let x = JSON.stringify(result);
+            alert("New Member Added: ID is " + x + "");
+            $("#addmemberbtn").modal("hide");
+        },
+        error:function(){
+            alert("Error: Member not Added");  
         }
     });
 }

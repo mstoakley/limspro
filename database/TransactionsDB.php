@@ -46,6 +46,31 @@ function getBookAvailability($dbo) {
         return array('error' => $e->getMessage());
     }
 }
+function userCheckedOutBooks($dbo){
+    $cmd = "SELECT ID FROM checkouts where MemberId = :memberID  ";
+    $statement = $dbo->conn->prepare($sql);
+    $statement->execute();
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+function getCheckedOutBooks($dbo) {
+    try {
+        // Replace 'books' with your actual table name
+        $sql = "SELECT books.ID as BID,
+        books.Title as BTitle FROM books WHERE Availability = 0";
+
+        // Use prepared statements to prevent SQL injection
+        $statement = $dbo->conn->prepare($sql);
+        $statement->execute();
+        
+        // Fetch the result set as an associative array
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $result;
+    } catch (PDOException $e) {
+        // Handle any database errors
+        return array('error' => $e->getMessage());
+    }
+}
 
 
 // Function to update the Availability of a book
@@ -85,12 +110,13 @@ function insertReturnEntryWithFine($checkoutId, $dueDate, $dbo) {
 
     try {
         $statement->execute([':checkoutId' => $checkoutId, ':fineAmount' => $fineAmount]);
+        return $fineAmount
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return 0;
     }
 
-    return 1;
+    
 }
 function calculateFine($returnDate, $dueDate) {
     $returnDate = new DateTime($returnDate);

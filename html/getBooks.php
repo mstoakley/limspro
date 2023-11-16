@@ -116,7 +116,7 @@
                       </div>
                     </div>
                     <div class = "modal-footer">
-                        <button class = "btn btn-success" id = "submitbtn">Submit</button>
+                        <button class = "btn btn-success" id = "membsubmitbtn">Submit</button>
                         <button class = "btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

@@ -10,4 +10,14 @@ if($action1 == "CheckMember"){
     $result = $mbo -> IfMemberExists($dbo,$memberID);
     echo($result);
 }
+if($action1 == "AddMember"){
+    $fName = $_POST['firstName'];
+    $lName = $_POST['lastName'];
+    $eMail = $_POST['email'];
+    $address = $_POST['address'];
+    $dbo = new Database();
+    $mbo = new MemberDB();
+    $result = $mbo -> addNewMember($dbo,$fName,$lName,$eMail,$address);
+    echo($result);
+}
 ?>
