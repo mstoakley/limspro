@@ -76,5 +76,6 @@ class BooksDB
       $result = $statement->fetchAll(PDO::FETCH_ASSOC);
       return $result;
     } 
+    
 }
 ?>

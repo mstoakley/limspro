@@ -1,11 +1,11 @@
 function gethtml(result) {
     const addButton = `<div class"addnew"><button id = "btnAddnew" class ="btn btn-primary">Add Book</button></div>`;
+    const chkOutBtn = `<div class"addnew"><button id = "btnchkout" class ="btn btn-primary">Check-Out</button></div>`;
     let table = `<table class ="table table-striped">
                      <thead>
                         <th>Author</th>
                         <th>Title</th>
                         <th>Genre</th>
-                        <th>Actions</th>
                     </thead>
                     <tbody>`;
             //column names for the Books table
@@ -14,11 +14,10 @@ function gethtml(result) {
                     <td>${book['AName']}</td>
                     <td>${book['BTitle']}</td>
                     <td>${book['GName']}</td>
-                    <td><button class="btn btn-primary" id = "btnchkout">Check-Out</button></td>
                   </tr>`;
     });
     table += `</tbody></table>`;
-    return addButton + table;
+    return addButton + chkOutBtn + table;
 }
 //dropdown for the genres
 
@@ -30,7 +29,14 @@ function gethtml(result) {
     html += `</select>`;
     return html;
   }  
-
+function availablebooks(result){
+    let html = `<select id="ddbooks" class="form-control">`;
+    result.forEach(book => {
+        html += `<option value="${book['BID']}">${book['BTitle']}</option>`;
+    });
+    html += `</select>`;
+    return html;
+}
 function GetAllBooks() {
     $.ajax({
         url: "/limspro/ajax/BooksDBAjax.php",
@@ -53,7 +59,29 @@ function GetAllBooks() {
         }
     });
 }
+function LoadBooks(){
+    $.ajax({
+        url: "/limspro/ajax/TransactionsDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"LoadAvailableBooks"},  
+        beforeSend: function() {
+            alert("Before Send");
+        },
+        success: function(result) {
+           //alert("Success");
+           let x = JSON.stringify(result);
+            //alert(x);
+            let html = availablebooks(result);
+            //alert(html);
+            $("#ddbooks").html(html);
+        },
+        error:function(){
+            alert("Error");
+        }
+    });
 
+}
 function LoadGenres(){
 
     $.ajax({
@@ -102,6 +130,7 @@ function pushtoserver(author, title, genre){
     $(document).ready(() => {
         GetAllBooks();
         LoadGenres();
+        LoadBooks();
         //add new book
         $(document).on("click", "#btnAddnew", () => {
             $("#modalprogram").modal("show");
@@ -125,35 +154,57 @@ function pushtoserver(author, title, genre){
     });
     $(document).on("click", "#submitbtn", () => {
         let member = $("#txtmemberid").val();
-        if(member != ""){
+        let userbook = $("#ddbooks").val();
+        if(member && userbook != ""){
             ifMemberExists(member);
+            
         }
         else{
             alert("invalid");
-        }//check to see if member exists, if so then check out book else new member form is spawned
+        }
     
     });
-function ifMemberExists(member){
+function ifMemberExists(member, userbook){
     $.ajax({
-        url: "/limspro/ajax/BooksDBAjax.php",
+        url: "/limspro/ajax/MembersBDAjax.php",
         type: "POST",
         dataType: "JSON",
         data: {action:"CheckMember",member:member},  
+        beforeSend: function() {
+        },
+        success: function(result) {
+            let x = JSON.stringify(result);
+            let userbook = $("#ddbooks").val();
+            CheckOutBooks(member, userbook);
+            $("#chkoutbtn").modal("hide");
+        },
+        error:function(){
+            $("chkoutbtn").modal("hide"); //New Member Form is spawned
+            alert("Member not found: Create new member");  
+        }
+    });
+}  
+function CheckOutBooks(member, userbook){
+    $.ajax({
+        url: "/limspro/ajax/TransactionsDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"CheckOut",member:member, userbook:userbook},  
         beforeSend: function() {
             
         },
         success: function(result) {
             let x = JSON.stringify(result);
           
-           alert("Member Exists");
+           alert("Checked Out Complete");
             $("#chkoutbtn").modal("hide");
         },
         error:function(){
             $("chkoutbtn").modal("hide");
-            alert("Error Member not found");  
+            alert("Error: Max Books Checked Out");  
         }
     });
-}   
+}
 
     
 //As of 10/27/2023 All code is correct and working.
