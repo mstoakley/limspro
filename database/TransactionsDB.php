@@ -141,7 +141,10 @@ function deleteCheckoutEntry($bookId, $memberId, $dbo) {
     } catch (PDOException $e) {
         // Handle the exception (e.g., log the error)
         echo "Error: " . $e->getMessage();
+        return 0;
     }
+
+    echo "Row deleted successfully.";
 }
 
 
