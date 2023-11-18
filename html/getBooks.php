@@ -8,13 +8,13 @@
     
         <main>
             <div class = "heading">
-                <h1>LIMSPro:All Books</h1>
+                <h1>LIMSPro: All Books</h1>
             </div>
             <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <a class="navbar-brand" href="#">Navbar</a>
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">Home</a>
+            <a class="navbar-brand" href="#">Reports</a>
+            <a class="navbar-brand" href="#">All Books</a>
             </div>
             </nav>
             <div id="contentdiv" class="test">

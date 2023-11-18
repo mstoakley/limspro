@@ -301,6 +301,27 @@ function ReturnBooks(returnmember, returnuserbook){
         success: function(result) {
             let x = JSON.stringify(result);
           
+          DeleteCheckOut(returnmember, returnuserbook);
+        },
+        error:function(){
+            $("#returnbtn").modal("hide");
+            alert("Error");  
+        }
+    });
+
+}
+function DeleteCheckOut(returnmember, returnuserbook){
+    $.ajax({
+        url: "/limspro/ajax/TransactionsDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"ReturnBook",returnmember:returnmember, returnuserbook:returnuserbook},  
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+            let x = JSON.stringify(result);
+          
            alert("Return Complete");
             $$("#returnbtn").modal("hide");
         },
@@ -309,6 +330,7 @@ function ReturnBooks(returnmember, returnuserbook){
             alert("Error");  
         }
     });
+
 
 }
 function addNewMember(firstName, lastName, email, address){

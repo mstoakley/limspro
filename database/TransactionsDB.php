@@ -23,6 +23,7 @@ if ($checkoutId !== null) {
         $dueDate = $this-> getDueDate($dbo, $checkoutId);
     $this -> insertReturnEntryWithFine($checkoutId, $dueDate, $dbo);
     $this -> updateBookReturns($bookId,$dbo);
+    
    return true;
     }else{
         exit("You have not checked out this book.");
@@ -128,11 +129,25 @@ function insertCheckoutEntry($bookId, $MemberId, $dbo) {
     $stmt->bindParam(':bookId', $bookId);
     $stmt->execute();
 }
+function deleteCheckoutEntry($bookId, $memberId, $dbo) {
+    // Replace 'checkouts' with your actual table name
+    $sql = "DELETE FROM checkouts WHERE BookId = :bookId AND MemberId = :memberId";
+
+    // Use prepared statements to prevent SQL injection
+    $statement = $dbo->conn->prepare($sql);
+
+    try {
+        $statement->execute([':bookId' => $bookId, ':memberId' => $memberId]);
+    } catch (PDOException $e) {
+        // Handle the exception (e.g., log the error)
+        echo "Error: " . $e->getMessage();
+    }
+}
 
 
 function insertReturnEntryWithFine($checkoutId, $dueDate, $dbo) {
     // Calculate the fine amount
-    $fineAmount = $this -> calculateFine(date('Y-m-d'), $dueDate);
+    $fineAmount = $this->calculateFine(date('Y-m-d'), $dueDate);
 
     $sql = "INSERT INTO returns (CheckoutID, ReturnDate, FineAmount) VALUES (:checkoutId, CURDATE(), :fineAmount)";
     $statement = $dbo->conn->prepare($sql);
@@ -144,9 +159,8 @@ function insertReturnEntryWithFine($checkoutId, $dueDate, $dbo) {
         echo "Error: " . $e->getMessage();
         return 0;
     }
-
-    
 }
+
 function calculateFine($returnDate, $dueDate) {
     // Convert the date strings to DateTime objects
     $returnDate = new DateTime($returnDate);

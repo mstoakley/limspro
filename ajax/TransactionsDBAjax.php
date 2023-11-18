@@ -43,5 +43,13 @@ if($action1 == "LoadAvailableBooksReturn"){
         $result = $mbo -> userCheckedOutBooks($dbo, $memberID);
         echo($result);
     }
+    if($action1 == "DeleteCheckOut"){
+        $bookID = $_POST['returnuserbook'];
+        $memberID = $_POST['returnmember'];
+        $dbo = new Database();
+        $mbo = new TransactionsDB();
+        $result = $mbo -> deleteCheckoutEntry($bookId, $memberId, $dbo);
+        echo($result);
+    }
 
 ?>
