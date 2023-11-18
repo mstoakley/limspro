@@ -20,4 +20,28 @@ if($action1 == "LoadAvailableBooks"){
     $rv = json_encode($result);
     echo($rv);
 }
+if($action1 == "ReturnBook"){
+    $dbo = new Database();
+    $mbo = new TransactionsDB();
+    $bookID = $_POST['returnuserbook'];
+    $memberID = $_POST['returnmember'];
+    $result = $mbo -> returnBook($bookID,$memberID,$dbo);
+    $rv = json_encode($result);
+    echo($rv);
+}
+if($action1 == "LoadAvailableBooksReturn"){
+        $dbo = new Database();
+        $mbo = new TransactionsDB();
+        $result = $mbo -> getCheckedOutBooks($dbo);
+        $rv = json_encode($result);
+        echo($rv);
+    }
+ if($action1 == "CheckCheckOut"){
+        $memberID = $_POST['returnmember'];
+        $dbo = new Database();
+        $mbo = new TransactionsDB();
+        $result = $mbo -> userCheckedOutBooks($dbo, $memberID);
+        echo($result);
+    }
+
 ?>

@@ -16,14 +16,22 @@ function checkoutBook($dbo, $MemberId, $bookId) {
     
 }
 // Function to return a book
-function returnBook($bookId, $checkoutId, $dueDate, $dbo) {
-    // Set Availability to 1 in the books table
-   
-    $this->insertReturnEntryWithFine($checkoutId, $dueDate, $dbo);
-    // Update the corresponding entry in the checkouts table with the return date
-   
-
-    return true; // Return successful
+function returnBook($bookId, $memberID, $dbo) {
+$checkoutId = $this->userCheckedOutBooks($dbo, $memberID);
+if ($checkoutId !== null) {
+    if($this->userCheckedOutBook($dbo, $memberID, $bookId)){
+        $dueDate = $this-> getDueDate($dbo, $checkoutId);
+    $this -> insertReturnEntryWithFine($checkoutId, $dueDate, $dbo);
+    $this -> updateBookReturns($bookId,$dbo);
+   return true;
+    }else{
+        exit("You have not checked out this book.");
+    }
+    
+} else {
+    exit("You have not checked out any books.");
+}
+ 
 }
 
 // Function to get the all available books
@@ -46,11 +54,19 @@ function getBookAvailability($dbo) {
         return array('error' => $e->getMessage());
     }
 }
-function userCheckedOutBooks($dbo){
-    $cmd = "SELECT ID FROM checkouts where MemberId = :memberID  ";
+function userCheckedOutBook($dbo, $memberID, $bookId) {
+    $sql = "SELECT * FROM checkouts WHERE MemberId = :memberId AND BookID = :bookId";
     $statement = $dbo->conn->prepare($sql);
-    $statement->execute();
-    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $statement->execute([':memberId' => $memberID, ':bookId' => $bookId]);
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result ? true : false;
+}
+function userCheckedOutBooks($dbo, $memberID) {
+    $cmd = "SELECT ID as CheckoutId FROM checkouts WHERE MemberId = :memberID";
+    $statement = $dbo->conn->prepare($cmd);
+    $statement->execute([':memberID' => $memberID]);
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result ? $result['CheckoutId'] : null;
 }
 function getCheckedOutBooks($dbo) {
     try {
@@ -88,6 +104,19 @@ function updateBookAvailability($bookId,$dbo) {
           return 0;
 }}
 
+function updateBookReturns($bookId,$dbo) {
+    // Replace 'books' with your actual table name
+    $sql = "UPDATE books SET Availability = 1 WHERE ID = ?";
+
+    // Use prepared statements to prevent SQL injection
+
+    $statement= $dbo->conn->prepare($sql);
+    try{
+        $statement->execute([$bookId]);
+        }catch(PDOException $e){
+          echo "Error: Title " . $e->getMessage();
+          return 0;
+}}
 // Function to insert a new entry into the checkouts table
 function insertCheckoutEntry($bookId, $MemberId, $dbo) {
     // Replace 'checkouts' with your actual table name
@@ -103,14 +132,14 @@ function insertCheckoutEntry($bookId, $MemberId, $dbo) {
 
 function insertReturnEntryWithFine($checkoutId, $dueDate, $dbo) {
     // Calculate the fine amount
-    $fineAmount = calculateFine(date('Y-m-d'), $dueDate);
+    $fineAmount = $this -> calculateFine(date('Y-m-d'), $dueDate);
 
     $sql = "INSERT INTO returns (CheckoutID, ReturnDate, FineAmount) VALUES (:checkoutId, CURDATE(), :fineAmount)";
     $statement = $dbo->conn->prepare($sql);
 
     try {
         $statement->execute([':checkoutId' => $checkoutId, ':fineAmount' => $fineAmount]);
-        return $fineAmount
+        return $fineAmount;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return 0;
@@ -119,12 +148,13 @@ function insertReturnEntryWithFine($checkoutId, $dueDate, $dbo) {
     
 }
 function calculateFine($returnDate, $dueDate) {
+    // Convert the date strings to DateTime objects
     $returnDate = new DateTime($returnDate);
     $dueDate = new DateTime($dueDate);
-
+    
     // Calculate the difference in days
-    $difference = $returnDate->diff($dueDate)->format('%R%a');
-
+    $difference = $dueDate->diff($returnDate)->format('%R%a');
+    
     // If the book is returned after the due date, calculate the fine
     if ($difference > 0) {
         // Example: $finePerDay is the fine amount per day
@@ -132,9 +162,17 @@ function calculateFine($returnDate, $dueDate) {
         $fineAmount = $difference * $finePerDay;
 
         return $fineAmount;
+    }else{
+        return 0;
     }
 }
-
+function getDueDate($dbo, $checkoutId) {
+    $cmd = "SELECT DueDate FROM checkouts WHERE ID = :checkoutId";
+    $statement = $dbo->conn->prepare($cmd);
+    $statement->execute([':checkoutId' => $checkoutId]);
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result ? $result['DueDate'] : null;
+}
 function canCheckOutBook($dbo, $MemberId) {
     // Query to count the number of checked-out books for the member
     $sql = "SELECT COUNT(*) as numCheckedOut FROM checkouts WHERE MemberId = :memberID";

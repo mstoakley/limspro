@@ -19,7 +19,7 @@ function gethtml(result) {
                   </tr>`;
     });
     table += `</tbody></table>`;
-    return addButton + chkOutBtn + NewmemberBtn+ table;
+    return addButton + chkOutBtn + NewmemberBtn+ table + ReturnBtn;
 }
 //dropdown for the genres
 
@@ -33,6 +33,14 @@ function gethtml(result) {
   }  
 function availablebooks(result){
     let html = `<select id="ddbooks" class="form-control">`;
+    result.forEach(book => {
+        html += `<option value="${book['BID']}">${book['BTitle']}</option>`;
+    });
+    html += `</select>`;
+    return html;
+}
+function availableReturnbooks(result){
+    let html = `<select id="ddrbooks" class="form-control">`;
     result.forEach(book => {
         html += `<option value="${book['BID']}">${book['BTitle']}</option>`;
     });
@@ -77,6 +85,29 @@ function LoadBooks(){
             let html = availablebooks(result);
             //alert(html);
             $("#ddbooks").html(html);
+        },
+        error:function(){
+            alert("Error");
+        }
+    });
+
+}
+function LoadCheckedoutBooks(){
+    $.ajax({
+        url: "/limspro/ajax/TransactionsDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"LoadAvailableBooksReturn"},  
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+           //alert("Success");
+           let x = JSON.stringify(result);
+            //alert(x);
+            let html = availableReturnbooks(result);
+            //alert(html);
+            $("#ddrbooks").html(html);
         },
         error:function(){
             alert("Error");
@@ -133,6 +164,7 @@ function pushtoserver(author, title, genre){
         GetAllBooks();
         LoadGenres();
         LoadBooks();
+        LoadCheckedoutBooks();
         //add new book
         $(document).on("click", "#btnAddnew", () => {
             $("#modalprogram").modal("show");
@@ -183,6 +215,37 @@ function pushtoserver(author, title, genre){
             alert("invalid");
         }
     });
+    //return book button
+    $(document).on("click", "#btnreturn", () => {
+        $("#returnbtn").modal("show");
+    });
+    $(document).on("click", "#returnsubmitbtn", () => {
+        let returnmember = $("#txtrmemberid").val();
+        let returnuserbook = $("#ddrbooks").val();
+        if(returnmember && returnuserbook != ""){
+            ifCheckedBookOut(returnmember, returnuserbook);
+        }
+    });
+
+function ifCheckedBookOut(returnmember, returnuserbook){
+    $.ajax({
+        url: "/limspro/ajax/TransactionsDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"CheckCheckOut",returnmember:returnmember, returnuserbook:returnuserbook},  
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+            let x = JSON.stringify(result);
+           ReturnBooks(returnmember, returnuserbook);
+            $("#returnbtn").modal("hide");
+        },
+        error:function(){
+            alert("Member has not checked out this book or Member does not exist");  
+        }
+    });
+    }
 function ifMemberExists(member, userbook){
     $.ajax({
         url: "/limspro/ajax/MembersBDAjax.php",
@@ -225,6 +288,28 @@ function CheckOutBooks(member, userbook){
             alert("Error: Max Books Checked Out");  
         }
     });
+}
+function ReturnBooks(returnmember, returnuserbook){
+    $.ajax({
+        url: "/limspro/ajax/TransactionsDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"ReturnBook",returnmember:returnmember, returnuserbook:returnuserbook},  
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+            let x = JSON.stringify(result);
+          
+           alert("Return Complete");
+            $$("#returnbtn").modal("hide");
+        },
+        error:function(){
+            $("#returnbtn").modal("hide");
+            alert("Error");  
+        }
+    });
+
 }
 function addNewMember(firstName, lastName, email, address){
     $.ajax({

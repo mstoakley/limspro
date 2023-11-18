@@ -122,6 +122,35 @@
                 </div>
             </div>   
         </div>
+
+        <div class="modal" id="returnbtn">
+            <div class= "modal-dialog">
+                <div class = "modal-content">
+                    <div class = "modal-header">
+                        <h5 class = "modal-title" >Return Book</h5>
+                        <button class="btn btn-danger" data-bs-dismiss="modal">
+                            X
+                        </button>
+                    </div>
+                    <div class = "modal-body">
+                      <div class ="userinputelement">
+                        <label> Enter Member ID </label>
+                        <input id = "txtrmemberid" type = "text" ></input>
+                      </div>
+
+                      <div class ="userinputelement">
+                        <label> Books to Return </label>
+                        <select id = "ddrbooks">
+                            </select>
+                      </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <button class = "btn btn-success" id = "returnsubmitbtn">Submit</button>
+                        <button class = "btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>   
+        </div>
     </body>
         <script src=" /limspro/js/jquery.js"></script>
         <script src=" /limspro/js/books.js"></script>
