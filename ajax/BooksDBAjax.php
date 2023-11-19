@@ -1,5 +1,5 @@
 <?php
-// {a:21 , b: 22,action:"GetAllBooks"},
+
 $root = $_SERVER['DOCUMENT_ROOT'];
 include  $root."/limspro/database/database.php";
 include  $root."/limspro/database/BooksDB.php";
@@ -33,11 +33,5 @@ if($action1 == "SaveBook"){
     exit();
 }
 
-if($action1 == "CheckMember"){
-    $memberID = $_POST['member'];
-    $dbo = new Database();
-    $mbo = new MemberDB();
-    $result = $mbo -> IfMemberExists($dbo,$memberID);
-    echo($result);
-}
+
 ?>

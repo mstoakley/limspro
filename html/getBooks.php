@@ -1,20 +1,19 @@
 <!DOCTYPE html>
     <head>
         <title>Get Books</title>
-        <link href="/limspro/css/bootstrap.min.css?v=1" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link href="/limspro/css/bootstrap.min.css?v=1" rel="stylesheet">
         <link href="/limspro/css/books.css?v=1" rel = "stylesheet">
     </head>
     <body>
     
         <main>
             <div class = "heading">
-                <h1>LIMSPro:All Books</h1>
+                <h1>LIMSPro: All Books</h1>
             </div>
             <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <a class="navbar-brand" href="#">Navbar</a>
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="Reports.php">Reports</a>
+            <a class="navbar-brand" href="#">All Books</a>
             </div>
             </nav>
             <div id="contentdiv" class="test">
@@ -70,9 +69,82 @@
                         <label> Enter Member ID </label>
                         <input id = "txtmemberid" type = "text" ></input>
                       </div>
+
+                      <div class ="userinputelement">
+                        <label> Genre </label>
+                        <select id = "ddbooks">
+                            </select>
+                      </div>
                     </div>
                     <div class = "modal-footer">
                         <button class = "btn btn-success" id = "submitbtn">Submit</button>
+                        <button class = "btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+        <div class="modal" id="addmemberbtn">
+            <div class= "modal-dialog">
+                <div class = "modal-content">
+                    <div class = "modal-header">
+                        <h5 class = "modal-title" >New Member</h5>
+                        <button class="btn btn-danger" data-bs-dismiss="modal">
+                            X
+                        </button>
+                    </div>
+                    <div class = "modal-body">
+                      <div class ="userinputelement">
+                        <label> First Name </label>
+                        <input id = "fname" type = "text" ></input>
+                      </div>
+
+                      <div class ="userinputelement">
+                        <label> Last Name </label>
+                        <input id = "lname" type = "text" ></input>
+                      </div>
+
+                      <div class ="userinputelement">
+                        <label> Email </label>
+                        <input id = "email" type = "text" ></input>
+                      </div>
+
+                      <div class ="userinputelement">
+                        <label> Home Address </label>
+                        <input id = "address" type = "text" ></input>
+                      </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <button class = "btn btn-success" id = "membsubmitbtn">Submit</button>
+                        <button class = "btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+        <div class="modal" id="returnbtn">
+            <div class= "modal-dialog">
+                <div class = "modal-content">
+                    <div class = "modal-header">
+                        <h5 class = "modal-title" >Return Book</h5>
+                        <button class="btn btn-danger" data-bs-dismiss="modal">
+                            X
+                        </button>
+                    </div>
+                    <div class = "modal-body">
+                      <div class ="userinputelement">
+                        <label> Enter Member ID </label>
+                        <input id = "txtrmemberid" type = "text" ></input>
+                      </div>
+
+                      <div class ="userinputelement">
+                        <label> Books to Return </label>
+                        <select id = "ddrbooks">
+                            </select>
+                      </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <button class = "btn btn-success" id = "returnsubmitbtn">Submit</button>
                         <button class = "btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

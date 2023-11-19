@@ -1,0 +1,32 @@
+.btn-group{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.btn:hover{    
+    transform: translateY(-.5rem);
+    transition: all .4s;
+    filter: drop-shadow(.5rem .5rem .1rem rgba(255, 68, 0, 0.349));
+}
+.heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3.5rem;
+    color: rgb(145, 189, 250);
+}
+.table-striped tbody tr :nth-child(2n){
+    background-color: rgb(145, 189, 250);
+}
+.table-striped tbody tr td{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    }    
+
+.table-striped tbody tr:hover{
+        transform: translateY(-.2rem);  
+        filter:drop-shadow(.5rem .5rem .1rem rgba(255, 68, 0, 0.349));
+        transition: all .4s;
+    }
+.table-striped tbody tr :nth-child(2n+1){
+        background-color: rgb(255, 219, 135);
+    }

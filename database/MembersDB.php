@@ -19,6 +19,20 @@ public function IfMemberExists($dbo,$memberID)
 
 }
 
+public function addNewMember($dbo,$fName,$lName,$eMail,$address)
+  {
+    $cmd = "INSERT into members (FirstName,LastName,Email,HomeAddress) VALUES (:fName,:lName,:eMail,:haddress)";
+    $statement = $dbo->conn->prepare($cmd);
+    try{
+    $statement->execute([':fName' => $fName,':lName' => $lName,':eMail' => $eMail,':haddress' => $address]);
+    $MembID = $dbo->conn->lastInsertId();
+    return $MembID;
+    }catch(PDOException $e){
+      echo "Error: Author " . $e->getMessage();
+      return 0;
+}
+
+}
 }
 
 ?>
