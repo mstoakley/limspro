@@ -1,8 +1,8 @@
 function gethtml(result) {
-    const addButton = `<div class"addnew"><button id = "btnAddnew" class ="btn btn-primary">Add Book</button></div>`;
-    const chkOutBtn = `<div class"addnew"><button id = "btnchkout" class ="btn btn-primary">Check-Out</button></div>`;
-    const NewmemberBtn = `<div class"addnew"><button id = "addnewmemb"" class ="btn btn-primary">Add New Member</button></div>`
-    const ReturnBtn = `<div class"addnew"><button id = "btnreturn" class ="btn btn-primary">Return Book</button></div>`;
+    const addButton = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "btnAddnew" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Add Book</button></div>`;
+    const chkOutBtn = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "btnchkout" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Check-Out</button></div>`;
+    const NewmemberBtn = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "addnewmemb" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Add New Member</button></div>`
+    const ReturnBtn = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "btnreturn" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Return Book</button></div>`;
     let table = `<table class ="table table-striped">
                      <thead>
                         <th>Author</th>
@@ -19,7 +19,7 @@ function gethtml(result) {
                   </tr>`;
     });
     table += `</tbody></table>`;
-    return addButton + chkOutBtn + NewmemberBtn+ table + ReturnBtn;
+    return addButton + chkOutBtn + NewmemberBtn+ ReturnBtn+table ;
 }
 //dropdown for the genres
 

@@ -18,6 +18,7 @@ public function IfMemberExists($dbo,$memberID)
     }
 
 }
+
 public function addNewMember($dbo,$fName,$lName,$eMail,$address)
   {
     $cmd = "INSERT into members (FirstName,LastName,Email,HomeAddress) VALUES (:fName,:lName,:eMail,:haddress)";

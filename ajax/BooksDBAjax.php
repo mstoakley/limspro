@@ -1,5 +1,5 @@
 <?php
-// {a:21 , b: 22,action:"GetAllBooks"},
+
 $root = $_SERVER['DOCUMENT_ROOT'];
 include  $root."/limspro/database/database.php";
 include  $root."/limspro/database/BooksDB.php";

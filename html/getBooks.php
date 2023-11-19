@@ -12,8 +12,7 @@
             </div>
             <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
-            <a class="navbar-brand" href="#">Home</a>
-            <a class="navbar-brand" href="#">Reports</a>
+            <a class="navbar-brand" href="Reports.php">Reports</a>
             <a class="navbar-brand" href="#">All Books</a>
             </div>
             </nav>
