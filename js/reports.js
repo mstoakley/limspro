@@ -9,6 +9,7 @@ function FinesOver20() {
 }
 
 
+
 function AllMembers() {
     const AllmembsBtn = `<div class="btn-group" role="group" aria-label="Basic example"><button id="allmembs" class="btn btn-primary">All Members</button></div>`;
     return AllmembsBtn;
@@ -121,23 +122,29 @@ function GetAllMembers() {
 }
 
 $(document).ready(() => {
-    $("#contentdiv").html(AllBooksCheckedOut() + FinesOver20() + AllMembers());
-   
-    $("#allBooksCheckdout").click(function () {
-        GetAllBooks();
-        
-        
-    });
+    
+$("#contentdiv").html(AllBooksCheckedOut() + FinesOver20() + AllMembers());
 
-    $("#finesover20").click(function () {
-        GetFines();
-       
+$("#contentdiv").on("click", "#allBooksCheckdout", function () {
+    GetAllBooks();
+    $("#bkbtn").click(function () {
+        $("#contentdiv").html(AllBooksCheckedOut() + FinesOver20() + AllMembers());
     });
+});
 
-    $("#allmembs").click(function () {
-        GetAllMembers();
-        $("#contentdiv").html(BackButton());
-        
+$("#contentdiv").on("click", "#finesover20", function () {
+    GetFines();
+    $("#bkbtn").click(function () {
+        $("#contentdiv").html(AllBooksCheckedOut() + FinesOver20() + AllMembers());
     });
+});
+
+$("#contentdiv").on("click", "#allmembs", function () {
+    GetAllMembers();
+    $("#bkbtn").click(function () {
+        $("#contentdiv").html(AllBooksCheckedOut() + FinesOver20() + AllMembers());
+    });
+});
+    
 });
 

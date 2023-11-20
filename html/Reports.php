@@ -12,11 +12,12 @@
             </div>
             <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
-            <a class="navbar-brand" href="#">Home</a>
             <a class="navbar-brand" href="#">Reports</a>
             <a class="navbar-brand" href="getBooks.php">All Books</a>
             </div>
             </nav>
+            <button class = "btn btn-danger" onclick = "logout()">Log Out</button>
+            <button id="bkbtn" class="btn btn-primary">Back to Reports</button>
             <div id="contentdiv" class="test">
             </div>
         
@@ -27,7 +28,12 @@
         <script src=" /limspro/js/jquery.js"></script>
         <script src=" /limspro/js/reports.js"></script>
         <script src=" /limspro/js/bootstrap.bundle.min.js"></script>
-        
+        <script>
+             function logout() {
+            // Redirect to the login page
+            window.location.href = 'login.html';
+        }
+        </script>
         
 
     </html>
