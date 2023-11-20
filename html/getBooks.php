@@ -15,7 +15,9 @@
             <a class="navbar-brand" href="Reports.php">Reports</a>
             <a class="navbar-brand" href="#">All Books</a>
             </div>
+           
             </nav>
+            <button class = "btn btn-danger" onclick = "logout()">Log Out</button>
             <div id="contentdiv" class="test">
             </div>
         
@@ -150,11 +152,16 @@
                 </div>
             </div>   
         </div>
+       
     </body>
         <script src=" /limspro/js/jquery.js"></script>
         <script src=" /limspro/js/books.js"></script>
         <script src=" /limspro/js/bootstrap.bundle.min.js"></script>
-        
-        
+        <script>
+             function logout() {
+            // Redirect to the login page
+            window.location.href = 'login.html';
+        }
+        </script>
 
     </html>
