@@ -3,7 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+
 -- Generation Time: Nov 21, 2023 at 06:06 PM
+
+
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -72,6 +75,7 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`ID`, `Title`, `AuthorId`, `GenreId`, `Availability`) VALUES
+
 (3, 'Emma', 1, 1, b'0'),
 (4, 'Harry Potter and the Sorcerer\'s Stone', 3, 5, b'1'),
 (18, 'The Great Gatsby', 32, 12, b'0'),
@@ -81,6 +85,7 @@ INSERT INTO `books` (`ID`, `Title`, `AuthorId`, `GenreId`, `Availability`) VALUE
 (36, 'To Kill a Mockingbird', 36, 16, b'1'),
 (37, 'The Catcher in the Rye', 37, 17, b'1'),
 (40, 'The Scarlet Letter', 40, 20, b'1');
+
 
 -- --------------------------------------------------------
 
@@ -101,6 +106,7 @@ CREATE TABLE `checkouts` (
 --
 
 INSERT INTO `checkouts` (`ID`, `MemberId`, `BookId`, `DueDate`, `CheckOutDate`) VALUES
+
 (30, 5, 4, '2023-12-02', '2023-11-18'),
 (31, 1, 3, '2023-12-03', '2023-11-19'),
 (32, 4, 36, '2023-12-05', '2023-11-21'),
@@ -108,6 +114,9 @@ INSERT INTO `checkouts` (`ID`, `MemberId`, `BookId`, `DueDate`, `CheckOutDate`) 
 (34, 7, 4, '2023-12-05', '2023-11-21'),
 (35, 4, 4, '2023-10-25', '2023-10-11'),
 (36, 7, 18, '2023-12-05', '2023-11-21');
+
+
+
 
 -- --------------------------------------------------------
 
@@ -181,6 +190,7 @@ CREATE TABLE `returns` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+
 -- Dumping data for table `returns`
 --
 
@@ -192,6 +202,7 @@ INSERT INTO `returns` (`ID`, `CheckoutID`, `ReturnDate`, `FineAmount`) VALUES
 (37, 35, '2023-11-21', 67.50);
 
 --
+
 -- Indexes for dumped tables
 --
 
@@ -258,6 +269,8 @@ ALTER TABLE `books`
 --
 ALTER TABLE `checkouts`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+=======
+
 
 --
 -- AUTO_INCREMENT for table `genre`
@@ -277,6 +290,7 @@ ALTER TABLE `members`
 ALTER TABLE `returns`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
+
 --
 -- Constraints for dumped tables
 --
@@ -287,6 +301,8 @@ ALTER TABLE `returns`
 ALTER TABLE `books`
   ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`GenreId`) REFERENCES `genre` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `books_ibfk_2` FOREIGN KEY (`AuthorId`) REFERENCES `author` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 
 --
 -- Constraints for table `checkouts`
@@ -300,6 +316,7 @@ ALTER TABLE `checkouts`
 --
 ALTER TABLE `returns`
   ADD CONSTRAINT `returns_ibfk_1` FOREIGN KEY (`CheckoutID`) REFERENCES `checkouts` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
