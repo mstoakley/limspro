@@ -203,8 +203,8 @@ function pushtoserver(author, title, genre){
         },
         success: function(result) {
            //alert("Success");
-           let x = JSON.stringify(result);
-            alert(x);
+              let x = JSON.stringify(result);
+            alert("Book Added");
             $("#modalprogram").modal("hide");
             GetAllBooks();
         },

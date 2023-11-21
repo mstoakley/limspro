@@ -45,7 +45,6 @@ if($action1 == "SaveBook"){
     $bbo = new BooksDB();
     $result = $bbo -> addNewBook($dbo,$title,$author,$genre);
     echo($result);
-    exit();
 }
 
 
