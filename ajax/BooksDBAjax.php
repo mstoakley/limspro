@@ -14,10 +14,25 @@ if($action1 == "GetAllBooks"){
  echo($rv);
  exit();
 }
+if($action1 == "DeleteBook"){
+    $ID = $_POST['userbook'];
+    $dbo = new Database();
+    $bbo = new BooksDB();
+    $result = $bbo -> deleteBook($ID,$dbo);
+    echo($result);
+    exit();
+}
 if($action1 == "LoadAllGenres"){
     $dbo = new Database();
     $bbo = new BooksDB();
     $result = $bbo -> getGenres($dbo);
+    $rv = json_encode($result);
+    echo($rv);
+}
+if($action1 == "LoadAllBookTitles"){
+    $dbo = new Database();
+    $bbo = new BooksDB();
+    $result = $bbo -> getBookTitles($dbo);
     $rv = json_encode($result);
     echo($rv);
 }

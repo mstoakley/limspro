@@ -1,8 +1,10 @@
 function gethtml(result) {
-    const addButton = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "btnAddnew" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Add Book</button></div>`;
-    const chkOutBtn = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "btnchkout" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Check-Out</button></div>`;
-    const NewmemberBtn = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "addnewmemb" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Add New Member</button></div>`
-    const ReturnBtn = `<div class="btn-group" role="group" aria-label="Basic example"><button id = "btnreturn" class="row-xs-1 col-xs-4 btn btn-block btn-primary">Return Book</button></div>`;
+    const addButton = `<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"><div class="btn-group mr-5" role="group" aria-label="Basic example"><button id = "btnAddnew" class="row-xs-1 col-xs-4  btn btn-secondary">Add Book</button></div>`;
+    const chkOutBtn = `<button type ="button" button id = "btnchkout" class="row-xs-1 col-xs-4  btn btn-secondary ">Check-Out</button>`;
+    const NewmemberBtn = `<button type ="button" button id = "addnewmemb" class="row-xs-1 col-xs-4 btn btn-secondary  ">Add New Member</button>`
+    const ReturnBtn = `<button type ="button" button id = "btnreturn" class="row-xs-1 col-xs-4 btn btn-secondary">Return Book</button>`;
+    const DeleteBtn = `<button type ="button" button id = "btndelete" class="row-xs-1 col-xs-4  btn btn-secondary">Delete Book</button></div></div>`;
+
     let table = `<table class ="table table-striped">
                      <thead>
                         <th>Author</th>
@@ -19,7 +21,7 @@ function gethtml(result) {
                   </tr>`;
     });
     table += `</tbody></table>`;
-    return addButton + chkOutBtn + NewmemberBtn+ ReturnBtn+table ;
+    return addButton + chkOutBtn + NewmemberBtn+ ReturnBtn+DeleteBtn+table ;
 }
 //dropdown for the genres
 
@@ -33,6 +35,14 @@ function gethtml(result) {
   }  
 function availablebooks(result){
     let html = `<select id="ddbooks" class="form-control">`;
+    result.forEach(book => {
+        html += `<option value="${book['BID']}">${book['BTitle']}</option>`;
+    });
+    html += `</select>`;
+    return html;
+}
+function deleteBooks(result){
+    let html = `<select id="ddDeletebooks" class="form-control">`;
     result.forEach(book => {
         html += `<option value="${book['BID']}">${book['BTitle']}</option>`;
     });
@@ -91,6 +101,50 @@ function LoadBooks(){
         }
     });
 
+}
+function LoadBookTitles(){
+    $.ajax({
+        url: "/limspro/ajax/BooksDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"LoadAllBookTitles"},  
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+           //alert("Success");
+           let x = JSON.stringify(result);
+            //alert(x);
+            let html = deleteBooks(result);
+            //alert(html);
+            $("#ddDeletebooks").html(html);
+        },
+        error:function(){
+            alert("Error");
+        }
+    });
+}
+function DeleteBook(userbook){
+    $.ajax({
+        url: "/limspro/ajax/BooksDBAjax.php",
+        type: "POST",
+        dataType: "JSON",
+        data: {action:"DeleteBook",userbook:userbook},
+        beforeSend: function() {
+            
+        },
+        success: function(result) {
+           //alert("Success");
+           let x = JSON.stringify(result);
+            //alert(x);
+            alert("Book Deleted");
+            $("#deletebtnfrm").modal("hide");
+        },
+        error:function(){
+            alert("Error");
+        }
+
+});
 }
 function LoadCheckedoutBooks(){
     $.ajax({
@@ -165,6 +219,7 @@ function pushtoserver(author, title, genre){
         LoadGenres();
         LoadBooks();
         LoadCheckedoutBooks();
+        LoadBookTitles();
         //add new book
         $(document).on("click", "#btnAddnew", () => {
             $("#modalprogram").modal("show");
@@ -196,8 +251,21 @@ function pushtoserver(author, title, genre){
         else{
             alert("invalid");
         }
-    
     });
+    //delete button
+    $(document).on("click", "#btndelete", () => {
+        $("#deletebtnfrm").modal("show");
+});
+$(document).on("click", "#deletesubmitbtn", () => {
+    let userbook = $("#ddDeletebooks").val();
+    if( userbook != ""){
+        DeleteBook(userbook);
+        
+    }
+    else{
+        alert("invalid");
+    }
+});
     //add new member button
     $(document).on("click", "#addnewmemb", () => {
         $("#addmemberbtn").modal("show");
