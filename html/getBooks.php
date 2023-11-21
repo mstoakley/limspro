@@ -152,6 +152,30 @@
                 </div>
             </div>   
         </div>
+
+        <div class="modal" id="deletebtnfrm">
+            <div class= "modal-dialog">
+                <div class = "modal-content">
+                    <div class = "modal-header">
+                        <h5 class = "modal-title" >Delete Book</h5>
+                        <button class="btn btn-danger" data-bs-dismiss="modal">
+                            X
+                        </button>
+                    </div>
+                    <div class = "modal-body">
+                      <div class ="userinputelement">
+                        <label> Books Available For Deletion </label>
+                        <select id = "ddDeletebooks">
+                            </select>
+                      </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <button class = "btn btn-success" id = "deletesubmitbtn">Submit</button>
+                        <button class = "btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>   
+        </div>
        
     </body>
         <script src=" /limspro/js/jquery.js"></script>

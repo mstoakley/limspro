@@ -5,19 +5,42 @@ class BooksDB
     public function getAllBooks($dbo)
   {
     $cmd = "SELECT
-    author.AuthorName as AName,
-    books.Title as BTitle,
-    genre.GenreName as GName
-    FROM
-    books 
-    JOIN author ON books.AuthorId = author.ID
-    JOIN genre ON books.GenreId = genre.ID";
+      author.AuthorName as AName,
+      books.Title as BTitle,
+      genre.GenreName as GName
+      FROM
+      books 
+      JOIN author ON books.AuthorId = author.ID
+      JOIN genre ON books.GenreId = genre.ID
+      WHERE books.Title IS NOT NULL";
+    ;
   
     
     $statement = $dbo->conn->prepare($cmd);
     $statement->execute();
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     return $result;
+  }
+
+  function getBookTitles($dbo){
+    $cmd = "SELECT books.ID as BID,
+        books.Title as BTitle FROM books WHERE Availability = 1";
+    $statement = $dbo->conn->prepare($cmd);
+    $statement->execute();
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+  }
+  function deleteBook($bookId, $dbo) {
+    $sql = "DELETE FROM books WHERE id = :bookId";
+    $statement = $dbo->conn->prepare($sql);
+
+    try {
+      $statement->execute([':bookId' => $bookId]);
+      return true;
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
+      return false;
+    }
   }
   public function getBooksByGenre($dbo,$genreName)
   {
