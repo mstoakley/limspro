@@ -1,6 +1,6 @@
 <!DOCTYPE html>
     <head>
-        <title>Get Books</title>
+        <title>Reports</title>
         <link href="/limspro/css/bootstrap.min.css?v=1" rel="stylesheet">
         <link href="/limspro/css/reports.css?v=1" rel = "stylesheet">
     </head>

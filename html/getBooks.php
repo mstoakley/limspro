@@ -73,7 +73,7 @@
                       </div>
 
                       <div class ="userinputelement">
-                        <label> Genre </label>
+                        <label> Books to Check Out </label>
                         <select id = "ddbooks">
                             </select>
                       </div>

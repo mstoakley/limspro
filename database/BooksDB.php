@@ -79,7 +79,7 @@ class BooksDB
     }
     $genreID = $dbo->conn->lastInsertId();
 
-    $cmd = "INSERT into books (Title,GenreId,ID) VALUES (:title,:genreID,:authorID)";
+    $cmd = "INSERT into books (Title,GenreId,AuthorId) VALUES (:title,:genreID,:authorID)";
     $statement= $dbo->conn->prepare($cmd);
     try{
     $statement->execute([':title' => $booktitle, ':genreID' => $genreID,':authorID' => $authorID]);
@@ -87,7 +87,7 @@ class BooksDB
       echo "Error: Title " . $e->getMessage();
       return 0;
     }
-    return 1;
+    return true;
 }
     public function getGenres($dbo)
     {

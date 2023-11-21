@@ -29,7 +29,8 @@ function GetAllBooks() {
         success: function (result) {
             let table = `<table class="table table-striped">
             <thead>
-               <th>Id</th>
+               <th>Member Id</th>
+               <th>Book Id</th>
                <th>Title</th>
                <th>Author</th>
                <th>Due Date</th>
@@ -37,6 +38,7 @@ function GetAllBooks() {
            <tbody>`;
             result.forEach(book => {
                 table += `<tr>
+           <td>${book['MemberID']}</td>
            <td>${book['BookID']}</td>
            <td>${book['BookTitle']}</td>
            <td>${book['AuthorName']}</td>

@@ -24,7 +24,7 @@ function getAllMembers($dbo) {
 function getCheckedOutBooks($dbo) {
     try {
         // Replace 'books' with your actual table name
-        $sql = "SELECT b.ID as BookID,b.Availability as Bvailability, b.Title as BookTitle, a.AuthorName as AuthorName, c.DueDate
+        $sql = "SELECT b.ID as BookID,b.Availability as Bvailability, b.Title as BookTitle, a.AuthorName as AuthorName, c.DueDate, c.ID as CheckoutID, c.MemberId as MemberID
         FROM checkouts c
         JOIN books b ON c.BookID = b.ID
         JOIN author a ON b.AuthorId = a.ID
